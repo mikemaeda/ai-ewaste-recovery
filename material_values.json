@@ -1,0 +1,6 @@
+{
+  "cables": "Potential copper recovery. Value depends on copper content, insulation, and contamination.",
+  "circuit_boards": "Potential precious and base metal recovery, including copper, gold, silver, palladium, and tin.",
+  "smartphones": "Mixed recovery stream with battery, aluminum, copper, glass, plastics, and small precious-metal-bearing boards.",
+  "ram": "Higher-value board category with gold-plated contacts and recoverable copper-bearing circuitry."
+}

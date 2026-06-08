@@ -1,0 +1,8 @@
+.python313/
+artifacts/
+__pycache__/
+*.pyc
+
+# Image datasets can be large and may contain private photographs.
+data/
+samples/
