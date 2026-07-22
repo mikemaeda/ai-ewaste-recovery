@@ -1,0 +1,18 @@
+# Poster Abstract Drafts
+
+## Abstract 1 - Balanced
+
+Electronic waste contains valuable recoverable materials, but manual sorting limits efficient recovery. This project develops an AI-assisted e-waste recovery prototype that connects computer-vision predictions to material-recovery decisions. A MobileNetV2 transfer-learning classifier was trained on 23,960 labeled e-waste images across 18 classes and achieved 90.7% validation accuracy. Dataset analysis and targeted augmentation expanded the working dataset to 27,380 images while eliminating underrepresented canonical classes below a 900-image threshold. A material database was created for 27 e-waste components, including estimated value per kilogram, copper content, precious-metal content, and recovery priority. Components are ranked using a transparent recovery score that weights estimated value, copper content, and precious-metal content. The highest-ranked recovery targets were CPUs, connectors, laptop motherboards, smartphones, RAM, and GPUs. This work demonstrates how computer vision can move beyond object classification toward actionable recovery prioritization. Future work will train a custom YOLO detector, unify the classifier and recovery taxonomies, evaluate real-time detection metrics, and validate material estimates experimentally.
+
+## Abstract 2 - Technical
+
+This project presents a computer-vision pipeline for e-waste component recognition and recovery-priority estimation. A MobileNetV2 transfer-learning classifier was trained on 23,960 images from 18 e-waste classes using an 80/20 split and achieved 90.7% validation accuracy after 10 epochs. Dataset analysis identified class imbalance, and targeted augmentation expanded the working dataset to 27,380 images, with all canonical classes above a 900-image low-frequency threshold. The classification output is connected to a curated material database containing estimated material composition and economic value for 27 components. A deterministic recovery score is computed from normalized economic value, copper content, and precious-metal content using weights of 0.50, 0.30, and 0.20, respectively. Recovery ranking identified CPUs, connectors, laptop motherboards, smartphones, RAM, and GPUs as the highest-priority targets. The system includes a real-time dashboard prototype and camera integration tools. The custom YOLO object detector remains future work pending bounding-box annotation and training.
+
+## Abstract 3 - Sustainability
+
+Recovering valuable materials from electronic waste requires rapid identification of components that contain copper, precious metals, and other critical materials. This project uses artificial intelligence to support recovery decisions by linking image-based component recognition to a material-composition database. A MobileNetV2 classifier trained on 23,960 e-waste images achieved 90.7% validation accuracy, and dataset balancing increased the working image corpus to 27,380 images. Each component is evaluated using a recovery score based on estimated material value, copper content, and precious-metal content. The resulting ranking highlights CPUs, connectors, laptop motherboards, smartphones, RAM, GPUs, PCBs, cables, tablets, and SSDs as priority recovery targets. By translating visual recognition into material-recovery recommendations, this prototype demonstrates a pathway toward more informed e-waste sorting. Future work will complete object-detection training, integrate the real-time camera dashboard, and validate material estimates with measured data.
+
+## Recommended Abstract
+
+Use Abstract 1 for a general undergraduate research poster. It is technical enough for computer science faculty while still clearly explaining the sustainability impact.
+

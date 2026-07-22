@@ -1,0 +1,11 @@
+[
+  {
+    "index": 0,
+    "backend": "default",
+    "available": true,
+    "width": 1280,
+    "height": 720,
+    "fps": 30.0,
+    "snapshot": "artifacts\\reports\\camera_probe\\camera_0_default_snapshot.jpg"
+  }
+]

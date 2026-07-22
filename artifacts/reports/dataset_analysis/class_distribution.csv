@@ -1,0 +1,8 @@
+class,count,percent,status
+metal_component,10829,45.20,ok
+plastic_housing,3720,15.53,ok
+cpu,3556,14.84,ok
+PCB,2480,10.35,ok
+laptop_motherboard,1415,5.91,ok
+battery,1160,4.84,ok
+heat_sink,800,3.34,underrepresented

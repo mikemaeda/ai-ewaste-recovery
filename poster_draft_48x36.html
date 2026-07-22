@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AI-Assisted E-Waste Recovery Poster Draft</title>
+  <style>
+    @page {
+      size: 48in 36in;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #d9dde3;
+      color: #17202a;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .poster {
+      width: 48in;
+      height: 36in;
+      margin: 0 auto;
+      background: #f7f9fb;
+      display: grid;
+      grid-template-rows: 3.2in 1fr 0.7in;
+      border-top: 0.25in solid #1f4e79;
+    }
+
+    header {
+      padding: 0.45in 0.75in 0.25in;
+      background: #ffffff;
+      border-bottom: 0.06in solid #b7c7d6;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 46pt;
+      line-height: 1.05;
+      color: #12395b;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 0.18in;
+      font-size: 22pt;
+      color: #34495e;
+    }
+
+    .authors {
+      margin-top: 0.12in;
+      font-size: 18pt;
+      color: #4a5560;
+    }
+
+    main {
+      padding: 0.45in 0.6in;
+      display: grid;
+      grid-template-columns: 1fr 1.45fr 1fr;
+      gap: 0.35in;
+      min-height: 0;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25in;
+      min-width: 0;
+    }
+
+    section {
+      background: #ffffff;
+      border: 0.035in solid #c8d4df;
+      border-radius: 0.08in;
+      padding: 0.24in;
+      box-shadow: 0 0.04in 0.12in rgba(21, 38, 54, 0.08);
+    }
+
+    h2 {
+      margin: 0 0 0.13in;
+      font-size: 23pt;
+      color: #1f4e79;
+      border-bottom: 0.025in solid #d5e2ec;
+      padding-bottom: 0.07in;
+    }
+
+    p, li {
+      font-size: 15.5pt;
+      line-height: 1.25;
+    }
+
+    p {
+      margin: 0 0 0.1in;
+    }
+
+    ul {
+      margin: 0.05in 0 0;
+      padding-left: 0.22in;
+    }
+
+    li {
+      margin-bottom: 0.07in;
+    }
+
+    .formula {
+      margin-top: 0.12in;
+      padding: 0.12in;
+      background: #eef5fa;
+      border-left: 0.06in solid #1f4e79;
+      font-family: Consolas, monospace;
+      font-size: 16pt;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+      border-radius: 0.04in;
+    }
+
+    figcaption {
+      margin-top: 0.05in;
+      font-size: 11.5pt;
+      color: #465360;
+      line-height: 1.2;
+    }
+
+    .hero {
+      padding: 0.16in;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.22in;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .callout {
+      background: #12395b;
+      color: white;
+      border-color: #12395b;
+    }
+
+    .callout h2 {
+      color: white;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .callout p {
+      font-size: 17pt;
+    }
+
+    footer {
+      padding: 0.16in 0.75in;
+      background: #12395b;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14pt;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .poster {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <header>
+      <h1>AI-Assisted E-Waste Recovery: Connecting Computer Vision to Material-Recovery Decisions</h1>
+      <div class="subtitle">Computer vision classification plus transparent recovery scoring for e-waste prioritization</div>
+      <div class="authors">Mike Maeda | Undergraduate Research Project | Computer Science / Engineering / Sustainability</div>
+    </header>
+
+    <main>
+      <div class="col">
+        <section>
+          <h2>Research Question</h2>
+          <p>Can a computer-vision system identify e-waste components and prioritize them for material recovery using an interpretable scoring model?</p>
+        </section>
+
+        <section>
+          <h2>Introduction</h2>
+          <ul>
+            <li>E-waste contains recoverable copper, gold, silver, palladium, lithium, cobalt, nickel, and rare-earth materials.</li>
+            <li>Traditional classification answers "what is this?" but not "which component should be recovered first?"</li>
+            <li>This project links visual recognition to material-recovery decisions.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Methods</h2>
+          <ul>
+            <li>MobileNetV2 transfer-learning classifier trained on 23,960 labeled images across 18 classes.</li>
+            <li>80/20 train-validation split, 10 epochs.</li>
+            <li>Class-balancing augmentation expanded the working dataset to 27,380 images.</li>
+            <li>Material database stores value, copper, precious metals, and priority for 27 components.</li>
+          </ul>
+          <div class="formula">score = 0.50*value + 0.30*copper + 0.20*precious</div>
+        </section>
+
+        <section>
+          <figure>
+            <img src="artifacts/reports/poster/fig8_pipeline.png" alt="System pipeline">
+            <figcaption>End-to-end pipeline from camera or image input to recovery-priority recommendation.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <figure>
+            <img src="artifacts/reports/poster/fig6_dataset_distribution.png" alt="Dataset distribution">
+            <figcaption>Expanded augmented dataset: 27,380 images; no canonical class below the 900-image threshold.</figcaption>
+          </figure>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="hero">
+          <figure>
+            <img src="artifacts/reports/poster/fig7_classifier_headline.png" alt="Classifier accuracy headline">
+          </figure>
+        </section>
+
+        <section>
+          <h2>Results</h2>
+          <div class="results-grid">
+            <figure class="wide">
+              <img src="artifacts/reports/poster/fig1_recovery_ranking.png" alt="Recovery ranking">
+              <figcaption>Recovery priority score for 27 e-waste components. CPUs, connectors, laptop motherboards, smartphones, RAM, and GPUs rank highest.</figcaption>
+            </figure>
+            <figure class="wide">
+              <img src="artifacts/reports/poster/fig9_material_table.png" alt="Top recovery targets table">
+              <figcaption>Top-10 recovery targets with estimated value, copper percent, precious-metal percent, recovery score, and priority.</figcaption>
+            </figure>
+            <figure>
+              <img src="artifacts/reports/poster/fig2_score_composition.png" alt="Score composition">
+              <figcaption>Score decomposition shows how value, copper, and precious metals contribute.</figcaption>
+            </figure>
+            <figure>
+              <img src="artifacts/reports/poster/fig3_value_vs_score.png" alt="Value vs score">
+              <figcaption>Economic value vs. recovery score; copper-rich parts remain important even at lower dollar value.</figcaption>
+            </figure>
+          </div>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="callout">
+          <h2>Main Finding</h2>
+          <p>The project turns component recognition into recovery decision support by ranking detected e-waste according to estimated value, copper content, and precious-metal content.</p>
+        </section>
+
+        <section>
+          <h2>Material Insights</h2>
+          <figure>
+            <img src="artifacts/reports/poster/fig4_copper_content.png" alt="Copper content">
+            <figcaption>Copper content by component. Cables, connectors, transformers, GPUs, and boards are key copper-bearing streams.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <figure>
+            <img src="artifacts/reports/poster/fig5_precious_metals.png" alt="Precious metals">
+            <figcaption>Gold, silver, and palladium estimates for high-value components. Values are literature-based estimates.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Discussion</h2>
+          <ul>
+            <li>Contribution: an interpretable bridge from computer vision to recovery prioritization.</li>
+            <li>Transparent scoring makes the recommendation auditable.</li>
+            <li>Limitation: custom YOLO detector is not fully trained yet; final detection mAP is future work.</li>
+            <li>Material composition estimates rely on published literature values rather than direct spectroscopic measurement.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Conclusion and Future Work</h2>
+          <ul>
+            <li>AI can identify e-waste components and rank them for recovery.</li>
+            <li>Next: label bounding boxes, train YOLO, evaluate precision/recall/mAP and latency.</li>
+            <li>Deploy the real-time Arducam dashboard and validate material estimates experimentally.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div>Python | TensorFlow/Keras | Ultralytics YOLO | OpenCV | NumPy | Matplotlib</div>
+      <div>All reported numbers generated from project files in artifacts/reports/</div>
+    </footer>
+  </div>
+</body>
+</html>
+

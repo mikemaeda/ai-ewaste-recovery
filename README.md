@@ -1,134 +1,188 @@
-# Complete MobileNetV2 Image Classifier
+# AI-Assisted E-Waste Recovery
 
-This project trains an image classifier from a local folder using TensorFlow, Keras, data augmentation, and MobileNetV2 transfer learning.
+This undergraduate research project connects computer vision with electronic-waste material recovery. The system classifies or detects e-waste components, links the predicted component to a material-profile database, calculates an interpretable recovery score, and ranks components by recycling priority.
 
-## 1. Python Environment
+The project is intentionally split into completed, experimental, and planned work. The MobileNetV2 image classifier and recovery-scoring layer are implemented. The YOLO object-detection and real-time sorting workflow is included as experimental work in progress.
 
-This project already contains a local Python 3.13 runtime in `.python313`. TensorFlow 2.21, Keras, Matplotlib, NumPy, and Pillow are installed in it.
+## Research Motivation
 
-In VS Code, select this interpreter:
+Electronic waste contains recoverable materials such as copper, aluminum, gold, silver, palladium, lithium, cobalt, nickel, and rare-earth materials. Sorting remains a practical bottleneck: a model that only answers "what object is this?" is less useful than a system that also answers "which component should be recovered first?"
+
+## Research Question
+
+Can a computer-vision system identify e-waste components and prioritize them for material recovery using an interpretable recovery scoring model?
+
+## Current Capabilities
+
+- Trains a MobileNetV2 transfer-learning classifier on folder-organized e-waste images.
+- Saves model artifacts, class labels, evaluation metrics, and training plots.
+- Predicts a new image with the saved classifier.
+- Maintains a material-profile database with estimated economic value, copper content, precious-metal content, and recovery priority.
+- Calculates a normalized recovery score from material-value features.
+- Generates poster/research figures from project artifacts.
+- Provides an experimental YOLO11 live-detection dashboard for camera or image input.
+- Includes dataset analysis and targeted augmentation utilities.
+
+## Technical Workflow
 
 ```text
-C:\Users\mhm5\Desktop\train\.python313\python.exe
+Camera / Image
+-> Computer Vision Model
+-> Component Class
+-> Material Database Lookup
+-> Recovery Score
+-> Priority Recommendation
 ```
 
-All commands below use that interpreter explicitly. If dependencies ever need to be reinstalled:
+The recovery score uses:
+
+```text
+score = 0.50 * economic value + 0.30 * copper content + 0.20 * precious-metal content
+```
+
+Each term is normalized to a 0-100 scale before weighting.
+
+## Model Architecture
+
+The completed classifier uses MobileNetV2 with ImageNet pretrained weights as a frozen feature extractor. A custom classification head applies global average pooling, a 128-neuron dense layer with ReLU activation, dropout, and a final softmax layer.
+
+The experimental detector uses YOLO11 through Ultralytics. If a trained `artifacts/models/best.pt` file is missing, the live detector can run in fallback mode with generic YOLO11 weights, but that mode is only a demonstration and should not be treated as final e-waste detection performance.
+
+## Dataset
+
+The classifier was trained using the Kaggle `E-Waste Image Classification Dataset (18 Classes)` by Harshad S. Gore. The local training dataset is not committed because it is large. Dataset download and planning notes are in:
+
+- `DATASET_SOURCES.md`
+- `DATASET_ACQUISITION_PLAN.md`
+- `external_dataset_candidates.csv`
+
+Expected image-classification folder layout:
+
+```text
+data/images/
+  Battery/
+  Keyboard/
+  PCB/
+  ...
+```
+
+The working dataset artifacts report:
+
+- Original dataset: 23,960 images
+- Expanded augmented dataset: 27,380 images
+- Canonical classes after expanded augmentation: 13
+- No canonical class below the 900-image low-frequency threshold after expanded augmentation
+
+## Supported Component Taxonomy
+
+The recovery taxonomy covers 27 e-waste component classes, including CPUs, connectors, laptop motherboards, smartphones, RAM modules, GPUs, PCBs, cables, tablets, SSDs, hard drives, batteries, power supplies, motors, displays, and plastic housings. See `ewaste_research/taxonomy.py` and `material_values.json`.
+
+## Results
+
+The MobileNetV2 classifier reached 90.7% validation accuracy after 10 epochs. Recovery scores were calculated for 27 e-waste components. The highest-ranked recovery targets were CPUs, connectors, laptop motherboards, smartphones, RAM modules, GPUs, PCBs, cables, tablets, and SSDs.
+
+Generated result files are kept under `artifacts/reports/`, including:
+
+- `evaluation.json`
+- `class_names.json`
+- `recovery_priority_table.csv`
+- dataset-analysis summaries
+- poster-ready figures in `artifacts/reports/poster/`
+
+## Installation
+
+Create and activate a Python environment. On Windows, TensorFlow currently requires a compatible Python version such as Python 3.13 for this project.
 
 ```powershell
-.\.python313\python.exe -m pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-## 2. Organize The Images
-
-Create one subfolder for each category. The folder names become the model's labels automatically:
-
-```text
-data/
-  images/
-    cables/
-      cable_01.jpg
-      cable_02.jpg
-    circuit_boards/
-      board_01.jpg
-      board_02.jpg
-    smartphones/
-      phone_01.jpg
-      phone_02.jpg
-```
-
-Use at least two categories. For a first prototype, aim for 20-30 varied images per category. Do not put the same or nearly identical photograph in multiple categories.
-
-No manual split is required. `train.py` automatically uses 80% of every class for training and 20% for validation.
-
-### Dataset Currently Installed
-
-The Kaggle `E-Waste Image Classification Dataset (18 Classes)` has already
-been downloaded into:
-
-```text
-data/kaggle_download/data/
-```
-
-It includes the original `train`, `val`, and `test` folders. `data/images` is
-a junction to the downloaded `train` folder, so no second 1.6 GB copy is
-needed. The training script sees 23,960 images and automatically creates:
-
-```text
-19,168 training images (80%)
-4,792 validation images (20%)
-```
-
-The detected classes are:
-
-```text
-Air-Conditioner
-Battery
-Keyboard
-Laptop
-Microchip-IC
-Microwave
-Mobile
-Mouse
-PCB
-Passive-Component
-Printer
-Refrigerator
-Resistor
-Television
-Washing Machine
-heat-sink
-light bulbs
-transistor
-```
-
-## 3. Train And Evaluate
+For YOLO/camera experiments:
 
 ```powershell
-.\.python313\python.exe train.py --data-dir data/images
+python -m pip install -r requirements_yolo.txt
 ```
 
-The script:
+## Usage
 
-1. Loads and resizes images to 224 x 224 RGB pixels.
-2. Creates a reproducible 80/20 training-validation split.
-3. Augments training images with flips, rotations, and zoom.
-4. loads ImageNet-trained MobileNetV2 without its original classifier.
-5. Freezes MobileNetV2 and trains a new ReLU/Softmax classification head.
-6. Uses Adam and categorical cross-entropy for 10 epochs.
-7. Evaluates the best epoch and saves the model, metrics, and graphs.
+Train the MobileNetV2 classifier:
 
-Generated files:
+```powershell
+python train.py --data-dir data/images
+```
+
+Predict one image after training:
+
+```powershell
+python predict.py samples/new_item.jpg --model artifacts/models/best_image_classifier.keras
+```
+
+Rank material-recovery priorities:
+
+```powershell
+python rank_recovery.py
+```
+
+Generate poster-ready figures:
+
+```powershell
+python make_poster_figures.py
+```
+
+Analyze a dataset:
+
+```powershell
+python analyze_dataset.py --data-dir data/images
+```
+
+Run the experimental live detector:
+
+```powershell
+python detect_ewaste.py --source auto --backend auto --width 1280 --height 720 --conf 0.25
+```
+
+## YOLO Work In Progress
+
+The YOLO object-detection path is included for continued development. Bounding-box labeling and final detector training are not complete yet. Current detector metrics such as precision, recall, mAP, latency, and FPS should be reported only after a custom detector is trained and evaluated.
+
+See `README_YOLO.md`, `prepare_yolo_data.py`, `train_yolo.py`, `evaluate_yolo.py`, and `train_yolo_colab.ipynb`.
+
+## Repository Structure
 
 ```text
-artifacts/models/best_image_classifier.keras
-artifacts/reports/class_names.json
-artifacts/reports/evaluation.json
-artifacts/reports/training_history.png
+.
+|-- ewaste_research/              # Shared camera, dashboard, taxonomy, materials, plotting utilities
+|-- artifacts/reports/            # Public summary metrics, CSVs, and generated figures
+|-- data/                         # Dataset instructions; raw images are ignored
+|-- train.py                      # MobileNetV2 classifier training
+|-- predict.py                    # Saved-model image prediction
+|-- detect_ewaste.py              # Experimental YOLO/camera dashboard
+|-- material_values.json          # Material profiles and recovery values
+|-- rank_recovery.py              # Recovery-score table generator
+|-- make_poster_figures.py        # Poster/research figure generator
+`-- README_YOLO.md                # YOLO workflow documentation
 ```
 
-## 4. Train And Test A New Image
+## Known Limitations
 
-Supply a photograph that is not part of the training folder:
+- Material values are curated estimates from published/reference sources and should be validated against measured samples.
+- The classifier taxonomy and full 27-component recovery taxonomy are not fully unified.
+- The custom YOLO detector is not fully trained yet.
+- Raw datasets and model weights are intentionally excluded from GitHub.
 
-```powershell
-.\.python313\python.exe train.py --data-dir data/images --predict-image samples/new_item.jpg
-```
+## Future Work
 
-The script prints the predicted category, confidence, and probability for every category.
+- Label bounding boxes for the expanded component taxonomy.
+- Train and evaluate the custom YOLO detector.
+- Report precision, recall, mAP, latency, and FPS.
+- Unify classifier classes with the full material-recovery taxonomy.
+- Validate material composition estimates against measured samples.
+- Extend the real-time dashboard toward sorting-line deployment.
 
-## 5. Test Later Without Retraining
+## License
 
-After the model has been trained, use:
+No license file has been selected yet. Until a license is added, all rights are reserved by default.
 
-```powershell
-.\.python313\python.exe predict.py samples/new_item.jpg `
-  --model artifacts/models/best_image_classifier.keras
-```
+## Acknowledgements
 
-## Architecture Explanation
-
-MobileNetV2 is the feature extractor. Its pretrained convolutional layers recognize useful visual patterns such as edges, textures, and shapes. Those layers are frozen, so their weights do not change.
-
-`GlobalAveragePooling2D` compresses MobileNetV2's spatial feature maps into a feature vector. A 128-neuron Dense layer with ReLU learns combinations relevant to this dataset. Dropout reduces overfitting. The final Dense layer has one Softmax neuron per category and produces probabilities that sum to 1.
-
-Categorical cross-entropy measures the difference between the correct one-hot class label and the Softmax probabilities. Adam updates only the custom classification head during training.
+This project uses TensorFlow/Keras, MobileNetV2, Ultralytics YOLO, OpenCV, NumPy, Pillow, Matplotlib, and the Kaggle e-waste image-classification dataset referenced above.

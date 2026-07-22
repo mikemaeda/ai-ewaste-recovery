@@ -1,0 +1,8 @@
+source,title_or_search,task_type,likely_use,link,notes
+paper,EWasteNet / E-Waste Vision Dataset,classification,device-level e-waste context and possible image sourcing,https://arxiv.org/abs/2311.12823,Useful for paper context; verify dataset access and license before reuse.
+paper,Roboflow 100 / Roboflow Universe,object detection,search for PCB and electronics detection datasets,https://arxiv.org/abs/2211.13523,Roboflow Universe may contain public detection projects; check each dataset license.
+paper,PCBDet / FICS-PCB benchmark,object detection,PCB component detection research context,https://arxiv.org/abs/2301.09268,Useful for PCB component detection framing; verify benchmark availability.
+portal,Kaggle e-waste image dataset,classification or detection,extra images for phones/batteries/PCBs/devices,https://www.kaggle.com/datasets,Search manually and record exact slug/license.
+portal,Hugging Face datasets,classification or detection,discover public image datasets,https://huggingface.co/datasets,Many results are classification-only; still useful for pretraining/curation.
+portal,Roboflow Universe electronics search,object detection,bounding-box datasets closest to YOLO needs,https://universe.roboflow.com/,Prefer datasets already exported in YOLO format.
+

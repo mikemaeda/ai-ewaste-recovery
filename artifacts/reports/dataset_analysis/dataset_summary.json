@@ -1,0 +1,17 @@
+{
+  "source": "data\\images",
+  "total_examples": 23960,
+  "class_counts": {
+    "metal_component": 10829,
+    "battery": 1160,
+    "heat_sink": 800,
+    "plastic_housing": 3720,
+    "laptop_motherboard": 1415,
+    "cpu": 3556,
+    "PCB": 2480
+  },
+  "underrepresented_classes": {
+    "heat_sink": 800
+  },
+  "low_frequency_threshold": 900
+}

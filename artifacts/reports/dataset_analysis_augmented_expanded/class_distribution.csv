@@ -1,0 +1,14 @@
+class,count,percent,status
+metal_component,5705,20.84,ok
+electric_motor,4011,14.65,ok
+cpu,3556,12.99,ok
+printer,1661,6.07,ok
+heat_sink,1500,5.48,ok
+smartphone,1500,5.48,ok
+mouse,1500,5.48,ok
+PCB,1500,5.48,ok
+display_screen,1500,5.48,ok
+laptop_motherboard,1415,5.17,ok
+keyboard,1259,4.60,ok
+battery,1160,4.24,ok
+transformer,1113,4.07,ok

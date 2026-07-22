@@ -1,0 +1,27 @@
+{
+  "validation_accuracy": 0.9065108299255371,
+  "validation_loss": 0.2757466733455658,
+  "epochs": 10,
+  "training_images_percent": 80,
+  "validation_images_percent": 20,
+  "classes": [
+    "Air-Conditioner",
+    "Battery",
+    "Keyboard",
+    "Laptop",
+    "Microchip-IC",
+    "Microwave",
+    "Mobile",
+    "Mouse",
+    "PCB",
+    "Passive-Component",
+    "Printer",
+    "Refrigerator",
+    "Resistor",
+    "Television",
+    "Washing Machine",
+    "heat-sink",
+    "light bulbs",
+    "transistor"
+  ]
+}

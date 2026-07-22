@@ -1,0 +1,12 @@
+# YOLO11 e-waste detection dependencies (separate from the Keras classifier).
+# Install with:  python -m pip install -r requirements_yolo.txt
+#
+# ultralytics pulls in torch + torchvision automatically (CPU build on a normal
+# Windows laptop). opencv-python provides the live on-screen detection window.
+
+ultralytics>=8.3.0
+opencv-python>=4.8.0
+pillow>=10.0.0
+numpy>=1.26.0
+PyYAML>=6.0
+matplotlib>=3.8.0

@@ -1,0 +1,21 @@
+{
+  "source": "data\\images_augmented_expanded",
+  "total_examples": 27380,
+  "class_counts": {
+    "electric_motor": 4011,
+    "battery": 1160,
+    "heat_sink": 1500,
+    "keyboard": 1259,
+    "laptop_motherboard": 1415,
+    "metal_component": 5705,
+    "cpu": 3556,
+    "transformer": 1113,
+    "smartphone": 1500,
+    "mouse": 1500,
+    "PCB": 1500,
+    "printer": 1661,
+    "display_screen": 1500
+  },
+  "underrepresented_classes": {},
+  "low_frequency_threshold": 900
+}

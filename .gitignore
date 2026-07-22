@@ -1,8 +1,48 @@
-.python313/
-artifacts/
-__pycache__/
-*.pyc
+# Local Python environments
+.python*/
+.venv/
+venv/
+env/
 
-# Image datasets can be large and may contain private photographs.
-data/
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Large datasets and generated YOLO datasets
+data/images/
+data/images_augmented/
+data/images_augmented_expanded/
+data/kaggle_download/
+data/yolo_raw/
+dataset/
+dataset.zip
 samples/
+
+# Model weights and training checkpoints
+*.pt
+*.pth
+*.onnx
+artifacts/models/
+runs/
+
+# Unrelated local practice work
+leetcode_practice/
+
+# Generated reports: keep public summary outputs, ignore private camera snapshots
+artifacts/reports/camera_probe/*.jpg
+artifacts/reports/camera_probe/*.png
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

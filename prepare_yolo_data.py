@@ -1,0 +1,213 @@
+"""
+prepare_yolo_data.py
+
+Turn a flat folder of labeled images into the folder layout YOLO11 expects, and
+write the dataset.yaml file automatically.
+
+This is the YOLO *object-detection* data prep. It is separate from the existing
+prepare_data.py, which prepares folders for the Keras *image-classification*
+model. Both can live side by side.
+
+WHAT IT DOES
+------------
+1. Reads every image from --source-dir.
+2. Resizes each image to 640x640 (the size YOLO11 trains on).
+3. Splits them into train/val (default 80/20).
+4. Copies images into dataset/images/{train,val}.
+5. Copies each image's matching YOLO label .txt into dataset/labels/{train,val}.
+   (YOLO labels are normalized 0-1, so resizing the image does NOT change them.)
+6. Writes dataset/dataset.yaml with the 6 e-waste class names.
+
+EXPECTED INPUT
+--------------
+Put your images and their YOLO label files together in one folder, e.g.:
+
+    data/yolo_raw/
+        pcb_001.jpg
+        pcb_001.txt        <- YOLO label (same name, .txt extension)
+        cable_007.jpg
+        cable_007.txt
+        ...
+
+Each .txt line is:  <class_id> <x_center> <y_center> <width> <height>
+with all values normalized 0-1. Label Studio can export exactly this format
+(see README_YOLO.md). If an image has no .txt file, an empty label is written
+(YOLO treats it as a background/negative image) and a warning is printed.
+
+RUN IT
+------
+    python prepare_yolo_data.py --source-dir data/yolo_raw
+"""
+
+from __future__ import annotations
+
+import argparse
+import random
+from pathlib import Path
+
+from PIL import Image
+
+from ewaste_research.taxonomy import CANONICAL_CLASSES
+
+# These classes are the project's e-waste categories, in fixed order.
+# The index of each name here IS the class id used inside the label .txt files.
+CLASS_NAMES = CANONICAL_CLASSES
+
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+IMG_SIZE = 640
+SEED = 42
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Organize labeled images into the YOLO11 dataset layout."
+    )
+    parser.add_argument(
+        "--source-dir",
+        type=Path,
+        default=Path("data/yolo_raw"),
+        help="Folder containing your images and their matching .txt YOLO labels.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("dataset"),
+        help="Folder to create the YOLO train/val structure in.",
+    )
+    parser.add_argument(
+        "--val-ratio",
+        type=float,
+        default=0.2,
+        help="Fraction of images used for validation (default 0.2 = 20%%).",
+    )
+    parser.add_argument(
+        "--img-size",
+        type=int,
+        default=IMG_SIZE,
+        help="Square size to resize every image to (default 640).",
+    )
+    parser.add_argument("--seed", type=int, default=SEED)
+    return parser.parse_args()
+
+
+def find_images(source_dir: Path) -> list[Path]:
+    """Return every image file in the source folder, sorted for reproducibility."""
+    return sorted(
+        p
+        for p in source_dir.iterdir()
+        if p.is_file() and p.suffix.lower() in IMAGE_EXTENSIONS
+    )
+
+
+def make_dirs(output_dir: Path) -> None:
+    """Create the four folders YOLO needs: images/labels x train/val."""
+    for kind in ("images", "labels"):
+        for split in ("train", "val"):
+            (output_dir / kind / split).mkdir(parents=True, exist_ok=True)
+
+
+def resize_and_save(image_path: Path, dest_path: Path, size: int) -> None:
+    """Open an image, force it to size x size, and save it as the destination."""
+    with Image.open(image_path) as img:
+        # Convert to RGB so PNGs with transparency or grayscale photos all work.
+        rgb = img.convert("RGB")
+        resized = rgb.resize((size, size))
+        resized.save(dest_path)
+
+
+def copy_label(image_path: Path, dest_label_path: Path) -> bool:
+    """
+    Copy the YOLO label .txt that matches this image.
+
+    Returns True if a real label was found, False if an empty placeholder was
+    written instead.
+    """
+    source_label = image_path.with_suffix(".txt")
+    if source_label.exists():
+        dest_label_path.write_text(
+            source_label.read_text(encoding="utf-8"), encoding="utf-8"
+        )
+        return True
+    # No label: write an empty file so YOLO still accepts the image (background).
+    dest_label_path.write_text("", encoding="utf-8")
+    return False
+
+
+def write_dataset_yaml(output_dir: Path) -> Path:
+    """
+    Write dataset.yaml describing where the images are and what the classes are.
+
+    'path' is absolute so the file works no matter where YOLO is launched from
+    (your laptop or Google Colab after unzipping).
+    """
+    yaml_path = output_dir / "dataset.yaml"
+    names_block = "\n".join(
+        f"  {index}: {name}" for index, name in enumerate(CLASS_NAMES)
+    )
+    content = (
+        f"# Auto-generated by prepare_yolo_data.py\n"
+        f"path: {output_dir.resolve().as_posix()}\n"
+        f"train: images/train\n"
+        f"val: images/val\n"
+        f"\n"
+        f"nc: {len(CLASS_NAMES)}\n"
+        f"names:\n"
+        f"{names_block}\n"
+    )
+    yaml_path.write_text(content, encoding="utf-8")
+    return yaml_path
+
+
+def main() -> None:
+    args = parse_args()
+
+    if not args.source_dir.exists():
+        raise FileNotFoundError(
+            f"Source folder not found: {args.source_dir}\n"
+            "Create it and put your images + their .txt YOLO labels inside, e.g. "
+            "data/yolo_raw/pcb_001.jpg and data/yolo_raw/pcb_001.txt"
+        )
+
+    images = find_images(args.source_dir)
+    if not images:
+        raise ValueError(f"No images found in {args.source_dir}")
+
+    make_dirs(args.output_dir)
+
+    # Shuffle once, then take the first chunk as validation and the rest as train.
+    random.seed(args.seed)
+    random.shuffle(images)
+    val_count = max(1, round(len(images) * args.val_ratio))
+    val_images = images[:val_count]
+    train_images = images[val_count:]
+
+    missing_labels = 0
+    for split_name, split_images in (("train", train_images), ("val", val_images)):
+        for image_path in split_images:
+            # Save the resized image and its label under the same stem name.
+            stem = image_path.stem
+            dest_image = args.output_dir / "images" / split_name / f"{stem}.jpg"
+            dest_label = args.output_dir / "labels" / split_name / f"{stem}.txt"
+            resize_and_save(image_path, dest_image, args.img_size)
+            if not copy_label(image_path, dest_label):
+                missing_labels += 1
+
+    yaml_path = write_dataset_yaml(args.output_dir)
+
+    print(f"Total images:      {len(images)}")
+    print(f"  Train:           {len(train_images)}")
+    print(f"  Validation:      {len(val_images)}")
+    print(f"  Resized to:      {args.img_size}x{args.img_size}")
+    if missing_labels:
+        print(
+            f"WARNING: {missing_labels} image(s) had no .txt label. "
+            "Empty (background) labels were written for them. Label them before "
+            "training for meaningful results."
+        )
+    print(f"Dataset ready in:  {args.output_dir.resolve()}")
+    print(f"Config written:    {yaml_path}")
+    print("\nNext: zip the 'dataset' folder and upload it to the Colab notebook.")
+
+
+if __name__ == "__main__":
+    main()

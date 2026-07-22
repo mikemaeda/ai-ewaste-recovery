@@ -2,5 +2,418 @@
   "cables": "Potential copper recovery. Value depends on copper content, insulation, and contamination.",
   "circuit_boards": "Potential precious and base metal recovery, including copper, gold, silver, palladium, and tin.",
   "smartphones": "Mixed recovery stream with battery, aluminum, copper, glass, plastics, and small precious-metal-bearing boards.",
-  "ram": "Higher-value board category with gold-plated contacts and recoverable copper-bearing circuitry."
+
+  "smartphone": {
+    "display_name": "Smartphone",
+    "recovery_priority": "critical",
+    "estimated_value_usd_per_kg": 30.0,
+    "notes": "Compact high-value mixed stream containing a battery, dense logic board, cameras, aluminum/steel frame, glass, copper, and precious-metal-bearing contacts.",
+    "materials": [
+      { "material": "Copper", "percent": 13.0 },
+      { "material": "Aluminum", "percent": 12.0 },
+      { "material": "Glass / ceramics", "percent": 24.0 },
+      { "material": "Lithium-ion battery materials", "percent": 20.0 },
+      { "material": "Gold", "percent": 0.035 },
+      { "material": "Silver", "percent": 0.12 },
+      { "material": "Palladium", "percent": 0.01 },
+      { "material": "Rare earth elements", "percent": 0.2 },
+      { "material": "Plastics, silicon, adhesives, other", "percent": 30.635 }
+    ]
+  },
+
+  "tablet": {
+    "display_name": "Tablet",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 18.0,
+    "notes": "Large mobile-device stream with battery mass, display glass, aluminum chassis, copper-bearing logic board, and precious-metal contacts.",
+    "materials": [
+      { "material": "Copper", "percent": 10.0 },
+      { "material": "Aluminum", "percent": 18.0 },
+      { "material": "Glass / display", "percent": 30.0 },
+      { "material": "Lithium-ion battery materials", "percent": 24.0 },
+      { "material": "Gold", "percent": 0.02 },
+      { "material": "Silver", "percent": 0.08 },
+      { "material": "Palladium", "percent": 0.006 },
+      { "material": "Plastics, silicon, adhesives, other", "percent": 17.894 }
+    ]
+  },
+
+  "ram": {
+    "display_name": "RAM Module",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 28.0,
+    "notes": "High-value PCB stream with gold-plated edge contacts, copper traces, IC packages, and solder metals.",
+    "materials": [
+      { "material": "Copper", "percent": 18.0 },
+      { "material": "Gold", "percent": 0.045 },
+      { "material": "Silver", "percent": 0.12 },
+      { "material": "Palladium", "percent": 0.012 },
+      { "material": "Tin (solder)", "percent": 3.0 },
+      { "material": "Nickel", "percent": 2.0 },
+      { "material": "Epoxy resin and glass fiber", "percent": 76.823 }
+    ]
+  },
+
+  "PCB": {
+    "display_name": "Printed Circuit Board",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 18.0,
+    "notes": "Waste PCBs are one of the richest e-waste streams. ~30% metals, ~30% ceramics/glass fiber, ~30% epoxy plastics. Precious-metal concentrations dwarf those of natural ores.",
+    "materials": [
+      { "material": "Copper", "percent": 20.0 },
+      { "material": "Iron (steel)", "percent": 8.0 },
+      { "material": "Tin (solder)", "percent": 4.0 },
+      { "material": "Aluminum", "percent": 2.0 },
+      { "material": "Nickel", "percent": 2.0 },
+      { "material": "Lead", "percent": 2.0 },
+      { "material": "Zinc", "percent": 1.0 },
+      { "material": "Silver", "percent": 0.1 },
+      { "material": "Gold", "percent": 0.025 },
+      { "material": "Palladium", "percent": 0.011 },
+      { "material": "Epoxy resin and glass fiber", "percent": 60.0 }
+    ]
+  },
+
+  "heat_sink": {
+    "display_name": "Heat Sink",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.8,
+    "notes": "Mostly aluminum with occasional copper heat pipes or base plates. Simple mechanical separation makes it a useful non-ferrous stream.",
+    "materials": [
+      { "material": "Aluminum", "percent": 78.0 },
+      { "material": "Copper", "percent": 15.0 },
+      { "material": "Steel fasteners", "percent": 4.0 },
+      { "material": "Thermal compound / plastic", "percent": 3.0 }
+    ]
+  },
+
+  "cpu": {
+    "display_name": "CPU / Processor",
+    "recovery_priority": "critical",
+    "estimated_value_usd_per_kg": 42.0,
+    "notes": "Very high-value small component stream due to gold-plated pins or pads, copper heat spreaders, nickel, tin solder, and ceramic or organic substrate.",
+    "materials": [
+      { "material": "Copper", "percent": 20.0 },
+      { "material": "Gold", "percent": 0.08 },
+      { "material": "Silver", "percent": 0.18 },
+      { "material": "Palladium", "percent": 0.025 },
+      { "material": "Nickel", "percent": 5.0 },
+      { "material": "Tin (solder)", "percent": 3.0 },
+      { "material": "Silicon and ceramic/organic substrate", "percent": 71.715 }
+    ]
+  },
+
+  "gpu": {
+    "display_name": "Graphics Card / GPU",
+    "recovery_priority": "critical",
+    "estimated_value_usd_per_kg": 24.0,
+    "notes": "Large high-grade board with copper-rich cooling hardware, gold-plated connectors, IC packages, aluminum, and precious-metal-bearing PCB fractions.",
+    "materials": [
+      { "material": "Copper", "percent": 24.0 },
+      { "material": "Aluminum", "percent": 18.0 },
+      { "material": "Gold", "percent": 0.035 },
+      { "material": "Silver", "percent": 0.11 },
+      { "material": "Palladium", "percent": 0.012 },
+      { "material": "Tin (solder)", "percent": 3.0 },
+      { "material": "Steel brackets", "percent": 4.0 },
+      { "material": "Epoxy resin, glass fiber, silicon, plastics", "percent": 50.843 }
+    ]
+  },
+
+  "ssd": {
+    "display_name": "Solid State Drive (SSD)",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 14.0,
+    "notes": "Small PCB with NAND packages, controller IC, gold-plated contacts, copper traces, aluminum casing in some 2.5-inch drives, and solder metals.",
+    "materials": [
+      { "material": "Copper", "percent": 14.0 },
+      { "material": "Aluminum", "percent": 12.0 },
+      { "material": "Gold", "percent": 0.025 },
+      { "material": "Silver", "percent": 0.08 },
+      { "material": "Palladium", "percent": 0.008 },
+      { "material": "Tin (solder)", "percent": 3.0 },
+      { "material": "Epoxy resin, glass fiber, silicon, plastics", "percent": 70.887 }
+    ]
+  },
+
+  "cable": {
+    "display_name": "Cable / Wiring",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 5.5,
+    "notes": "Insulated copper wire. Recovery value is driven almost entirely by recoverable copper after stripping the plastic insulation.",
+    "materials": [
+      { "material": "Copper", "percent": 65.0 },
+      { "material": "PVC / plastic insulation", "percent": 30.0 },
+      { "material": "Aluminum", "percent": 3.0 },
+      { "material": "Steel (armoring)", "percent": 2.0 }
+    ]
+  },
+
+  "battery": {
+    "display_name": "Lithium-ion Battery",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 6.0,
+    "notes": "Hazardous and high-value. Cobalt, nickel, and lithium recovery drive the economics; must be handled carefully due to fire risk.",
+    "materials": [
+      { "material": "Graphite (carbon)", "percent": 16.0 },
+      { "material": "Cobalt", "percent": 15.0 },
+      { "material": "Nickel", "percent": 10.0 },
+      { "material": "Copper", "percent": 9.0 },
+      { "material": "Aluminum", "percent": 5.0 },
+      { "material": "Lithium", "percent": 3.0 },
+      { "material": "Manganese", "percent": 3.0 },
+      { "material": "Iron (steel casing)", "percent": 8.0 },
+      { "material": "Electrolyte and binder", "percent": 31.0 }
+    ]
+  },
+
+  "hard_drive": {
+    "display_name": "Hard Disk Drive (HDD)",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 2.0,
+    "notes": "Dominated by aluminum and steel, but contains valuable NdFeB rare-earth magnets (neodymium, dysprosium) and a small gold-bearing controller board.",
+    "materials": [
+      { "material": "Aluminum", "percent": 48.0 },
+      { "material": "Steel / iron", "percent": 21.0 },
+      { "material": "Copper", "percent": 7.0 },
+      { "material": "Neodymium (magnet)", "percent": 0.4 },
+      { "material": "Dysprosium (magnet)", "percent": 0.05 },
+      { "material": "Gold (controller board)", "percent": 0.003 },
+      { "material": "Plastics and other", "percent": 23.0 }
+    ]
+  },
+
+  "display_screen": {
+    "display_name": "Display / Screen",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.4,
+    "notes": "Value is usually lower than boards, but displays may contain aluminum framing, glass, indium tin oxide coatings, LEDs, and small circuit boards.",
+    "materials": [
+      { "material": "Glass", "percent": 55.0 },
+      { "material": "Aluminum", "percent": 12.0 },
+      { "material": "Plastics", "percent": 18.0 },
+      { "material": "Copper", "percent": 3.0 },
+      { "material": "Indium tin oxide", "percent": 0.05 },
+      { "material": "Steel fasteners / frame", "percent": 8.0 },
+      { "material": "Circuit board and LEDs", "percent": 3.95 }
+    ]
+  },
+
+  "keyboard": {
+    "display_name": "Keyboard",
+    "recovery_priority": "low",
+    "estimated_value_usd_per_kg": 0.7,
+    "notes": "Mostly plastic housing and membrane layers with a small PCB, copper traces, cable, and metal stabilizers.",
+    "materials": [
+      { "material": "ABS plastic", "percent": 68.0 },
+      { "material": "Copper", "percent": 5.0 },
+      { "material": "Steel", "percent": 8.0 },
+      { "material": "Rubber / membrane", "percent": 12.0 },
+      { "material": "Small PCB and electronics", "percent": 7.0 }
+    ]
+  },
+
+  "mouse": {
+    "display_name": "Computer Mouse",
+    "recovery_priority": "low",
+    "estimated_value_usd_per_kg": 0.8,
+    "notes": "Mostly plastic with a small PCB, copper cable or battery contacts, switches, wheel hardware, and optical sensor.",
+    "materials": [
+      { "material": "ABS plastic", "percent": 65.0 },
+      { "material": "Copper", "percent": 7.0 },
+      { "material": "Steel", "percent": 5.0 },
+      { "material": "Small PCB and sensor electronics", "percent": 18.0 },
+      { "material": "Rubber and other", "percent": 5.0 }
+    ]
+  },
+
+  "printer": {
+    "display_name": "Printer",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.6,
+    "notes": "Mixed device stream with plastic housing, steel frame, motors, wiring, power board, logic board, rollers, and cartridges/toner residues.",
+    "materials": [
+      { "material": "Plastics", "percent": 45.0 },
+      { "material": "Steel / iron", "percent": 25.0 },
+      { "material": "Copper", "percent": 8.0 },
+      { "material": "Aluminum", "percent": 5.0 },
+      { "material": "Circuit boards", "percent": 7.0 },
+      { "material": "Rubber, ink/toner residues, other", "percent": 10.0 }
+    ]
+  },
+
+  "charger_power_adapter": {
+    "display_name": "Charger / Power Adapter",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 3.8,
+    "notes": "Copper-rich small power electronics stream with transformer windings, cable, ferrites, small PCB, plastic housing, and solder metals.",
+    "materials": [
+      { "material": "Copper", "percent": 28.0 },
+      { "material": "Plastics", "percent": 36.0 },
+      { "material": "Ferrite / transformer core", "percent": 14.0 },
+      { "material": "Steel", "percent": 5.0 },
+      { "material": "Tin (solder)", "percent": 1.0 },
+      { "material": "Small PCB and electronic components", "percent": 16.0 }
+    ]
+  },
+
+  "power_supply": {
+    "display_name": "Computer Power Supply (PSU)",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 4.2,
+    "notes": "Copper-heavy stream with transformers, inductors, wiring, aluminum heat sinks, steel casing, and a lower-grade circuit board.",
+    "materials": [
+      { "material": "Copper", "percent": 22.0 },
+      { "material": "Steel / iron casing", "percent": 38.0 },
+      { "material": "Aluminum", "percent": 9.0 },
+      { "material": "Tin (solder)", "percent": 1.5 },
+      { "material": "Gold (board contacts)", "percent": 0.004 },
+      { "material": "Silver", "percent": 0.02 },
+      { "material": "Plastics, ferrites, capacitors, epoxy", "percent": 29.476 }
+    ]
+  },
+
+  "connector": {
+    "display_name": "Connector / Port",
+    "recovery_priority": "critical",
+    "estimated_value_usd_per_kg": 36.0,
+    "notes": "Small but high-value stream because connectors often contain copper alloys, nickel barrier plating, and thin gold plating on contacts.",
+    "materials": [
+      { "material": "Copper alloy", "percent": 55.0 },
+      { "material": "Nickel", "percent": 6.0 },
+      { "material": "Gold", "percent": 0.06 },
+      { "material": "Tin", "percent": 3.0 },
+      { "material": "Steel shell", "percent": 12.0 },
+      { "material": "Plastic insulator", "percent": 23.94 }
+    ]
+  },
+
+  "capacitor": {
+    "display_name": "Capacitor",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.1,
+    "notes": "Usually lower economic value but important to separate because electrolytic capacitors may contain aluminum foils, electrolyte, paper, plastics, and safety concerns.",
+    "materials": [
+      { "material": "Aluminum", "percent": 38.0 },
+      { "material": "Copper", "percent": 3.0 },
+      { "material": "Steel leads/case", "percent": 6.0 },
+      { "material": "Electrolyte / paper", "percent": 28.0 },
+      { "material": "Plastic sleeve and seal", "percent": 25.0 }
+    ]
+  },
+
+  "transformer": {
+    "display_name": "Transformer / Inductor",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 4.5,
+    "notes": "Copper windings and iron/ferrite cores make transformers a strong recovery target in power supplies, chargers, microwaves, and appliances.",
+    "materials": [
+      { "material": "Copper", "percent": 32.0 },
+      { "material": "Iron / steel core", "percent": 45.0 },
+      { "material": "Ferrite", "percent": 10.0 },
+      { "material": "Insulation varnish / paper", "percent": 8.0 },
+      { "material": "Plastic bobbin", "percent": 5.0 }
+    ]
+  },
+
+  "fan": {
+    "display_name": "Cooling Fan",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.3,
+    "notes": "Contains plastic blades/housing, small copper motor windings, steel shaft/bearings, and sometimes a small control PCB.",
+    "materials": [
+      { "material": "Plastics", "percent": 55.0 },
+      { "material": "Copper", "percent": 10.0 },
+      { "material": "Steel", "percent": 18.0 },
+      { "material": "Magnets", "percent": 4.0 },
+      { "material": "Small PCB and wiring", "percent": 13.0 }
+    ]
+  },
+
+  "electric_motor": {
+    "display_name": "Electric Motor / Compressor Motor",
+    "recovery_priority": "high",
+    "estimated_value_usd_per_kg": 3.2,
+    "notes": "Recovery value is driven by copper windings, steel laminations, magnets, and aluminum housings in appliances and cooling systems.",
+    "materials": [
+      { "material": "Copper", "percent": 18.0 },
+      { "material": "Steel / iron", "percent": 58.0 },
+      { "material": "Aluminum", "percent": 10.0 },
+      { "material": "Magnets", "percent": 3.0 },
+      { "material": "Insulation, oil, plastic, other", "percent": 11.0 }
+    ]
+  },
+
+  "speaker": {
+    "display_name": "Speaker / Audio Driver",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.5,
+    "notes": "Contains copper voice coil, steel frame, magnets, cone materials, adhesives, and small wiring.",
+    "materials": [
+      { "material": "Steel", "percent": 35.0 },
+      { "material": "Copper", "percent": 8.0 },
+      { "material": "Magnets / rare earth magnet material", "percent": 12.0 },
+      { "material": "Paper/plastic cone", "percent": 28.0 },
+      { "material": "Rubber, adhesives, wiring", "percent": 17.0 }
+    ]
+  },
+
+  "optical_drive": {
+    "display_name": "Optical Drive",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.4,
+    "notes": "Legacy CD/DVD drive stream with steel casing, aluminum, small motors, copper wiring, laser assembly, gears, and controller board.",
+    "materials": [
+      { "material": "Steel / iron", "percent": 48.0 },
+      { "material": "Aluminum", "percent": 8.0 },
+      { "material": "Copper", "percent": 7.0 },
+      { "material": "Circuit board", "percent": 8.0 },
+      { "material": "Plastics and gears", "percent": 25.0 },
+      { "material": "Laser/optical assembly", "percent": 4.0 }
+    ]
+  },
+
+  "laptop_motherboard": {
+    "display_name": "Laptop Motherboard",
+    "recovery_priority": "critical",
+    "estimated_value_usd_per_kg": 32.0,
+    "notes": "High-grade dense PCB containing copper traces, solder metals, connectors, IC packages, gold plating, and small amounts of silver and palladium.",
+    "materials": [
+      { "material": "Copper", "percent": 21.0 },
+      { "material": "Gold", "percent": 0.05 },
+      { "material": "Silver", "percent": 0.14 },
+      { "material": "Palladium", "percent": 0.018 },
+      { "material": "Tin (solder)", "percent": 4.0 },
+      { "material": "Nickel", "percent": 2.0 },
+      { "material": "Aluminum", "percent": 3.0 },
+      { "material": "Epoxy resin, glass fiber, plastics, silicon", "percent": 69.792 }
+    ]
+  },
+
+  "metal_component": {
+    "display_name": "Mixed Metal Component",
+    "recovery_priority": "medium",
+    "estimated_value_usd_per_kg": 1.2,
+    "notes": "Generic ferrous/non-ferrous metal parts (brackets, shielding, connectors). Value depends on the ferrous-to-non-ferrous ratio.",
+    "materials": [
+      { "material": "Iron / steel", "percent": 70.0 },
+      { "material": "Aluminum", "percent": 15.0 },
+      { "material": "Copper", "percent": 10.0 },
+      { "material": "Zinc", "percent": 3.0 },
+      { "material": "Other alloys", "percent": 2.0 }
+    ]
+  },
+
+  "plastic_housing": {
+    "display_name": "Plastic Housing / Casing",
+    "recovery_priority": "low",
+    "estimated_value_usd_per_kg": 0.3,
+    "notes": "Mostly ABS and polycarbonate. Often contaminated with brominated flame retardants, which lowers recyclability and value.",
+    "materials": [
+      { "material": "ABS plastic", "percent": 78.0 },
+      { "material": "Polycarbonate", "percent": 12.0 },
+      { "material": "Brominated flame retardants", "percent": 5.0 },
+      { "material": "Fillers and pigments", "percent": 5.0 }
+    ]
+  }
 }
