@@ -83,19 +83,19 @@ All coordinates must be normalized from 0 to 1.
 6. Run:
 
 ```powershell
-python prepare_yolo_data.py --source-dir data/yolo_raw
+python -m ewaste_research.cli.prepare_yolo_data --source-dir data/yolo_raw
 ```
 
 7. Train:
 
 ```powershell
-python train_yolo.py --data-yaml dataset/dataset.yaml --epochs 80 --device cpu
+python -m ewaste_research.cli.train_yolo --data-yaml dataset/dataset.yaml --epochs 80 --device cpu
 ```
 
 For a GPU machine or Colab, use:
 
 ```powershell
-python train_yolo.py --data-yaml dataset/dataset.yaml --epochs 100 --device 0
+python -m ewaste_research.cli.train_yolo --data-yaml dataset/dataset.yaml --epochs 100 --device 0
 ```
 
 8. Copy the best trained weights to:
@@ -107,12 +107,12 @@ artifacts/models/best.pt
 9. Evaluate:
 
 ```powershell
-python evaluate_yolo.py --model artifacts/models/best.pt --data-yaml dataset/dataset.yaml
+python -m ewaste_research.cli.evaluate_yolo --model artifacts/models/best.pt --data-yaml dataset/dataset.yaml
 ```
 
 10. Demo:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\run_ewaste_dashboard.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts/windows/run-detector.ps1
 ```
 

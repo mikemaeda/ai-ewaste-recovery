@@ -5,8 +5,8 @@ your screen and draws boxes around e-waste objects (PCBs, cables, batteries,
 hard drives, metal components, plastic housings), labels them, and prints what
 valuable materials each one contains.
 
-> This sits **alongside** the existing image-classifier (`train.py`,
-> `predict.py`, `prepare_data.py`). None of those files were changed. The YOLO
+> This sits **alongside** the existing image-classifier (`ewaste_research/cli/train_classifier.py`,
+> `ewaste_research/cli/predict_classifier.py`, `ewaste_research/cli/prepare_classifier_data.py`). None of those files were changed. The YOLO
 > files all have `yolo` in their name or are listed below.
 
 ## The 6 detection classes
@@ -16,7 +16,7 @@ valuable materials each one contains.
 `plastic_housing`
 
 Material composition, recovery priority, and scrap value for each are stored in
-`material_values.json`.
+`data/material-values.json`.
 
 The live detector also calculates a **recovery score** from estimated value,
 copper content, and precious-metal content, then shows the result in a real-time
@@ -35,13 +35,13 @@ onto e-waste categories.
 3. Install everything (one time):
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File .\setup_yolo.ps1
+   powershell -ExecutionPolicy Bypass -File .\scripts/windows/setup-yolo.ps1
    ```
 
 4. Run the live detector on your webcam:
 
    ```powershell
-   python detect_ewaste.py --source auto --backend auto --width 1280 --height 720 --conf 0.25
+   python -m ewaste_research.cli.run_detector --source auto --backend auto --width 1280 --height 720 --conf 0.25
    ```
 
    A window pops up. Point your webcam at a phone, laptop, or keyboard and you'll
@@ -51,7 +51,7 @@ onto e-waste categories.
    Or run it on a single photo instead of the webcam:
 
    ```powershell
-   python detect_ewaste.py --source path\to\photo.jpg
+   python -m ewaste_research.cli.run_detector --source path\to\photo.jpg
    ```
 
 That's the whole "one command and a window appears" goal. Everything below is
@@ -66,26 +66,26 @@ how to train your **own** accurate model.
 Generate poster-ready class-distribution outputs:
 
 ```powershell
-python analyze_dataset.py --data-dir data/images
+python -m ewaste_research.cli.analyze_dataset --data-dir data/images
 ```
 
 Balance underrepresented folder classes with camera-realistic augmentation:
 
 ```powershell
-python augment_low_frequency.py --source-dir data/images --output-dir data/images_augmented --target-count 1500
+python -m ewaste_research.cli.augment_dataset --source-dir data/images --output-dir data/images_augmented --target-count 1500
 ```
 
-For external datasets, see `DATASET_SOURCES.md`. Once you find Kaggle dataset
+For external datasets, see `docs/dataset-sources.md`. Once you find Kaggle dataset
 slugs, this helper prints the download commands:
 
 ```powershell
-python download_dataset_candidates.py --kaggle-slug owner/dataset-name
+python -m ewaste_research.cli.download_dataset --kaggle-slug owner/dataset-name
 ```
 
 ### Step 1 — Install
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\setup_yolo.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts/windows/setup-yolo.ps1
 ```
 
 This installs Ultralytics (YOLO11), OpenCV, and the rest from
@@ -129,7 +129,7 @@ Mouse, Microchip-IC, …). Use those as your source images.
 ### Step 3 — Build the YOLO dataset folder
 
 ```powershell
-python prepare_yolo_data.py --source-dir data/yolo_raw
+python -m ewaste_research.cli.prepare_yolo_data --source-dir data/yolo_raw
 ```
 
 This resizes everything to 640×640, splits into train/val, and writes:
@@ -146,7 +146,7 @@ dataset/
 1. Zip the `dataset` folder → `dataset.zip` (right-click > Send to >
    Compressed (zipped) folder).
 2. Go to [Google Colab](https://colab.research.google.com/) and upload
-   `train_yolo_colab.ipynb` (File > Upload notebook).
+   `notebooks/yolo-training-colab.ipynb` (File > Upload notebook).
 3. Set **Runtime > Change runtime type > T4 GPU**.
 4. Run the cells top to bottom. The notebook mounts Drive, installs Ultralytics,
    takes your `dataset.zip`, trains YOLO11, and downloads **`best.pt`**.
@@ -162,11 +162,11 @@ dataset/
 2. Run the live window with your model:
 
    ```powershell
-   python detect_ewaste.py --model artifacts/models/best.pt --source 0
+   python -m ewaste_research.cli.run_detector --model artifacts/models/best.pt --source 0
    ```
 
-   `detect_ewaste.py` automatically uses `artifacts/models/best.pt` if it exists,
-   so once the file is there you can just run `python detect_ewaste.py`.
+   `ewaste_research/cli/run_detector.py` automatically uses `artifacts/models/best.pt` if it exists,
+   so once the file is there you can just run `python -m ewaste_research.cli.run_detector`.
 
 ---
 
@@ -174,19 +174,19 @@ dataset/
 
 ```powershell
 # Find the connected Arducam/webcam index and save test snapshots
-python camera_probe.py
+python -m ewaste_research.cli.probe_camera
 
 # Webcam, default model location (trained if present, else fallback)
-python detect_ewaste.py --source auto --backend auto --width 1280 --height 720
+python -m ewaste_research.cli.run_detector --source auto --backend auto --width 1280 --height 720
 
 # Specific webcam index (try 1 if 0 is wrong)
-python detect_ewaste.py --source 1
+python -m ewaste_research.cli.run_detector --source 1
 
 # A single image
-python detect_ewaste.py --source photo.jpg
+python -m ewaste_research.cli.run_detector --source photo.jpg
 
 # Explicit trained model + lower confidence threshold
-python detect_ewaste.py --model artifacts/models/best.pt --conf 0.25
+python -m ewaste_research.cli.run_detector --model artifacts/models/best.pt --conf 0.25
 ```
 
 | Flag | Meaning | Default |
@@ -196,7 +196,7 @@ python detect_ewaste.py --model artifacts/models/best.pt --conf 0.25
 | `--width` / `--height` | Requested webcam resolution | `1280` / `720` |
 | `--model` | Path to trained `.pt` weights | `artifacts/models/best.pt` |
 | `--conf` | Minimum confidence to show a box (0–1) | `0.35` |
-| `--values` | Path to material data | `material_values.json` |
+| `--values` | Path to material data | `data/material-values.json` |
 
 ---
 
@@ -205,25 +205,25 @@ python detect_ewaste.py --model artifacts/models/best.pt --conf 0.25
 | File | Purpose |
 |------|---------|
 | `requirements_yolo.txt` | YOLO dependencies (separate from `requirements.txt`) |
-| `setup_yolo.ps1` | One-command installer |
-| `prepare_yolo_data.py` | Builds the YOLO `dataset/` layout + `dataset.yaml` |
-| `train_yolo.py` | Local YOLO training entry point for prepared detection datasets |
-| `train_yolo_colab.ipynb` | Colab notebook to train YOLO11 |
-| `detect_ewaste.py` | **The live on-screen detection window** |
-| `camera_probe.py` | Finds working camera indexes and saves test snapshots |
-| `arducam_viewer.py` | Opens the camera feed without YOLO for quick hardware testing |
-| `run_arducam_viewer.ps1` | One-command Arducam viewer launcher |
-| `run_ewaste_dashboard.ps1` | One-command live dashboard launcher |
-| `analyze_dataset.py` | Class distribution, underrepresented classes, poster graph + CSV |
-| `augment_low_frequency.py` | Targeted augmentation for low-frequency classes |
-| `evaluate_yolo.py` | Precision, recall, mAP, and inference latency reporting |
-| `rank_recovery.py` | Ranks classes by recovery score and exports a poster-ready CSV |
+| `scripts/windows/setup-yolo.ps1` | One-command installer |
+| `ewaste_research/cli/prepare_yolo_data.py` | Builds the YOLO `dataset/` layout + `dataset.yaml` |
+| `ewaste_research/cli/train_yolo.py` | Local YOLO training entry point for prepared detection datasets |
+| `notebooks/yolo-training-colab.ipynb` | Colab notebook to train YOLO11 |
+| `ewaste_research/cli/run_detector.py` | **The live on-screen detection window** |
+| `ewaste_research/cli/probe_camera.py` | Finds working camera indexes and saves test snapshots |
+| `ewaste_research/cli/view_camera.py` | Opens the camera feed without YOLO for quick hardware testing |
+| `scripts/windows/run-camera-viewer.ps1` | One-command Arducam viewer launcher |
+| `scripts/windows/run-detector.ps1` | One-command live dashboard launcher |
+| `ewaste_research/cli/analyze_dataset.py` | Class distribution, underrepresented classes, poster graph + CSV |
+| `ewaste_research/cli/augment_dataset.py` | Targeted augmentation for low-frequency classes |
+| `ewaste_research/cli/evaluate_yolo.py` | Precision, recall, mAP, and inference latency reporting |
+| `ewaste_research/cli/rank_recovery.py` | Ranks classes by recovery score and exports a poster-ready CSV |
 | `ewaste_research/` | Shared taxonomy, material scoring, plotting, and dashboard code |
-| `DATASET_SOURCES.md` | Dataset expansion notes for Kaggle/Roboflow searches |
-| `DATASET_ACQUISITION_PLAN.md` | Online data search, labeling, and training workflow |
-| `external_dataset_candidates.csv` | Candidate source log for Kaggle, Hugging Face, Roboflow, and papers |
-| `material_values.json` | Extended with rich data for the expanded component taxonomy |
-| `README_YOLO.md` | This file |
+| `docs/dataset-sources.md` | Dataset expansion notes for Kaggle/Roboflow searches |
+| `docs/dataset-acquisition.md` | Online data search, labeling, and training workflow |
+| `data/external-dataset-candidates.csv` | Candidate source log for Kaggle, Hugging Face, Roboflow, and papers |
+| `data/material-values.json` | Extended with rich data for the expanded component taxonomy |
+| `docs/yolo-workflow.md` | This file |
 
 ---
 
@@ -232,7 +232,7 @@ python detect_ewaste.py --model artifacts/models/best.pt --conf 0.25
 - **Window doesn't open / black webcam**: another app may be using the camera.
   Close it, or try `--source 1`.
 - **`Could not open video source`**: no webcam — run on an image instead:
-  `python detect_ewaste.py --source somephoto.jpg`.
+  `python -m ewaste_research.cli.run_detector --source somephoto.jpg`.
 - **Install is slow**: that's PyTorch downloading (hundreds of MB). Let it finish.
 - **Fallback labels look wrong** (e.g. a phone tagged `PCB`): expected — fallback
   maps everyday COCO objects to e-waste categories as a placeholder. Train your

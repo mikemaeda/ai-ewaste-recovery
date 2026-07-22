@@ -20,4 +20,4 @@ data/yolo_raw/
   image_001.txt
 ```
 
-See `DATASET_SOURCES.md`, `DATASET_ACQUISITION_PLAN.md`, and `README_YOLO.md` for dataset source notes and preparation steps.
+See `docs/dataset-sources.md`, `docs/dataset-acquisition.md`, and `docs/yolo-workflow.md` for dataset source notes and preparation steps.

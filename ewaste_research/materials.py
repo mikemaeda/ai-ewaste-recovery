@@ -27,7 +27,7 @@ class RecoveryFeatures:
     recovery_score: float
 
 
-def load_material_database(path: Path | str = "material_values.json") -> dict:
+def load_material_database(path: Path | str = "data/material-values.json") -> dict:
     """Load the JSON material database."""
     return json.loads(Path(path).read_text(encoding="utf-8"))
 

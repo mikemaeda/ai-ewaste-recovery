@@ -25,8 +25,8 @@ Kaggle, Hugging Face, and Roboflow searches to try:
 See also:
 
 ```text
-external_dataset_candidates.csv
-DATASET_ACQUISITION_PLAN.md
+data/external-dataset-candidates.csv
+docs/dataset-acquisition.md
 ```
 
 ## Candidate dataset types
@@ -79,15 +79,15 @@ python -m pip install kaggle
 Before training, run:
 
 ```powershell
-python analyze_dataset.py --data-dir data/images
-python augment_low_frequency.py --source-dir data/images --output-dir data/images_augmented --target-count 1500
+python -m ewaste_research.cli.analyze_dataset --data-dir data/images
+python -m ewaste_research.cli.augment_dataset --source-dir data/images --output-dir data/images_augmented --target-count 1500
 ```
 
 For YOLO labels:
 
 ```powershell
-python analyze_dataset.py --yolo-dir dataset
-python prepare_yolo_data.py --source-dir data/yolo_raw
+python -m ewaste_research.cli.analyze_dataset --yolo-dir dataset
+python -m ewaste_research.cli.prepare_yolo_data --source-dir data/yolo_raw
 ```
 
 Keep a spreadsheet or notes file with each external dataset's title, URL,

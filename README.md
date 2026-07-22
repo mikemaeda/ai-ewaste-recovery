@@ -19,7 +19,7 @@ Can a computer-vision system identify e-waste components and prioritize them for
 - Predicts a new image with the saved classifier.
 - Maintains a material-profile database with estimated economic value, copper content, precious-metal content, and recovery priority.
 - Calculates a normalized recovery score from material-value features.
-- Generates poster/research figures from project artifacts.
+- Generates reusable dataset-analysis and recovery-ranking reports.
 - Provides an experimental YOLO11 live-detection dashboard for camera or image input.
 - Includes dataset analysis and targeted augmentation utilities.
 
@@ -52,9 +52,9 @@ The experimental detector uses YOLO11 through Ultralytics. If a trained `artifac
 
 The classifier was trained using the Kaggle `E-Waste Image Classification Dataset (18 Classes)` by Harshad S. Gore. The local training dataset is not committed because it is large. Dataset download and planning notes are in:
 
-- `DATASET_SOURCES.md`
-- `DATASET_ACQUISITION_PLAN.md`
-- `external_dataset_candidates.csv`
+- `docs/dataset-sources.md`
+- `docs/dataset-acquisition.md`
+- `data/external-dataset-candidates.csv`
 
 Expected image-classification folder layout:
 
@@ -75,7 +75,7 @@ The working dataset artifacts report:
 
 ## Supported Component Taxonomy
 
-The recovery taxonomy covers 27 e-waste component classes, including CPUs, connectors, laptop motherboards, smartphones, RAM modules, GPUs, PCBs, cables, tablets, SSDs, hard drives, batteries, power supplies, motors, displays, and plastic housings. See `ewaste_research/taxonomy.py` and `material_values.json`.
+The recovery taxonomy covers 27 e-waste component classes, including CPUs, connectors, laptop motherboards, smartphones, RAM modules, GPUs, PCBs, cables, tablets, SSDs, hard drives, batteries, power supplies, motors, displays, and plastic housings. See `ewaste_research/taxonomy.py` and `data/material-values.json`.
 
 ## Results
 
@@ -87,7 +87,6 @@ Generated result files are kept under `artifacts/reports/`, including:
 - `class_names.json`
 - `recovery_priority_table.csv`
 - dataset-analysis summaries
-- poster-ready figures in `artifacts/reports/poster/`
 
 ## Installation
 
@@ -108,59 +107,52 @@ python -m pip install -r requirements_yolo.txt
 Train the MobileNetV2 classifier:
 
 ```powershell
-python train.py --data-dir data/images
+python -m ewaste_research.cli.train_classifier --data-dir data/images
 ```
 
 Predict one image after training:
 
 ```powershell
-python predict.py samples/new_item.jpg --model artifacts/models/best_image_classifier.keras
+python -m ewaste_research.cli.predict_classifier samples/new_item.jpg --model artifacts/models/best_image_classifier.keras
 ```
 
 Rank material-recovery priorities:
 
 ```powershell
-python rank_recovery.py
-```
-
-Generate poster-ready figures:
-
-```powershell
-python make_poster_figures.py
+python -m ewaste_research.cli.rank_recovery
 ```
 
 Analyze a dataset:
 
 ```powershell
-python analyze_dataset.py --data-dir data/images
+python -m ewaste_research.cli.analyze_dataset --data-dir data/images
 ```
 
 Run the experimental live detector:
 
 ```powershell
-python detect_ewaste.py --source auto --backend auto --width 1280 --height 720 --conf 0.25
+python -m ewaste_research.cli.run_detector --source auto --backend auto --width 1280 --height 720 --conf 0.25
 ```
 
 ## YOLO Work In Progress
 
 The YOLO object-detection path is included for continued development. Bounding-box labeling and final detector training are not complete yet. Current detector metrics such as precision, recall, mAP, latency, and FPS should be reported only after a custom detector is trained and evaluated.
 
-See `README_YOLO.md`, `prepare_yolo_data.py`, `train_yolo.py`, `evaluate_yolo.py`, and `train_yolo_colab.ipynb`.
+See `docs/yolo-workflow.md`, `ewaste_research/cli/prepare_yolo_data.py`, `ewaste_research/cli/train_yolo.py`, `ewaste_research/cli/evaluate_yolo.py`, and `notebooks/yolo-training-colab.ipynb`.
 
 ## Repository Structure
 
 ```text
 .
-|-- ewaste_research/              # Shared camera, dashboard, taxonomy, materials, plotting utilities
-|-- artifacts/reports/            # Public summary metrics, CSVs, and generated figures
-|-- data/                         # Dataset instructions; raw images are ignored
-|-- train.py                      # MobileNetV2 classifier training
-|-- predict.py                    # Saved-model image prediction
-|-- detect_ewaste.py              # Experimental YOLO/camera dashboard
-|-- material_values.json          # Material profiles and recovery values
-|-- rank_recovery.py              # Recovery-score table generator
-|-- make_poster_figures.py        # Poster/research figure generator
-`-- README_YOLO.md                # YOLO workflow documentation
+|-- ewaste_research/              # Reusable package code
+|   `-- cli/                      # Runnable commands for training, analysis, and detection
+|-- data/                         # Reference data and local-dataset instructions
+|-- docs/                         # Dataset and YOLO workflow documentation
+|-- notebooks/                    # Colab and experiment notebooks
+|-- scripts/windows/              # PowerShell setup and launch helpers
+|-- artifacts/reports/            # Public metrics, tables, and plots
+|-- requirements.txt              # Classifier dependencies
+`-- requirements_yolo.txt         # Detector and camera dependencies
 ```
 
 ## Known Limitations

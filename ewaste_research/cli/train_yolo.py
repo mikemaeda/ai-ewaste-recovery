@@ -27,7 +27,7 @@ def main() -> None:
     if not args.data_yaml.exists():
         raise FileNotFoundError(
             f"Dataset YAML not found: {args.data_yaml}. "
-            "Run prepare_yolo_data.py after creating YOLO labels."
+            "Run `python -m ewaste_research.cli.prepare_yolo_data` after creating YOLO labels."
         )
 
     model = YOLO(args.base_model)
@@ -61,4 +61,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

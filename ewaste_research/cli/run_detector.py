@@ -1,5 +1,5 @@
 """
-detect_ewaste.py
+ewaste_research/cli/run_detector.py
 
 Live, on-screen YOLO11 object detection for e-waste, with material-recovery
 readouts in the terminal.
@@ -11,7 +11,7 @@ WHAT YOU GET
 * Every detected object gets a bounding box + label + confidence drawn on it.
 * For each new detection, the terminal prints the object name, confidence, and
   the top-3 recoverable materials with their percentages, plus recovery
-  priority and estimated scrap value (read from material_values.json).
+  priority and estimated scrap value (read from data/material-values.json).
 * Press Q (or Esc) to quit.
 
 TWO WAYS IT RUNS
@@ -26,13 +26,13 @@ TWO WAYS IT RUNS
 EXAMPLES
 --------
     # Webcam (camera 0), fallback model if you have not trained yet:
-    python detect_ewaste.py
+    python -m ewaste_research.cli.run_detector
 
     # A specific image:
-    python detect_ewaste.py --source path/to/photo.jpg
+    python -m ewaste_research.cli.run_detector --source path/to/photo.jpg
 
     # Your trained model on the webcam:
-    python detect_ewaste.py --model artifacts/models/best.pt --source 0
+    python -m ewaste_research.cli.run_detector --model artifacts/models/best.pt --source 0
 """
 
 from __future__ import annotations
@@ -54,7 +54,7 @@ from ewaste_research.taxonomy import CANONICAL_CLASSES, normalize_component
 DEFAULT_MODEL = Path("artifacts/models/best.pt")
 # Pretrained model used for fallback mode. Ultralytics downloads it on first use.
 FALLBACK_MODEL = "yolo11n.pt"
-DEFAULT_VALUES = Path("material_values.json")
+DEFAULT_VALUES = Path("data/material-values.json")
 
 # Expanded e-waste class names used by the current research taxonomy.
 EWASTE_CLASSES = set(CANONICAL_CLASSES)
@@ -134,7 +134,7 @@ def parse_args() -> argparse.Namespace:
         "--values",
         type=Path,
         default=DEFAULT_VALUES,
-        help="Path to material_values.json.",
+        help="Path to data/material-values.json.",
     )
     parser.add_argument(
         "--conf",
@@ -169,7 +169,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def load_material_values(values_path: Path) -> dict:
-    """Load material_values.json, or return an empty dict if it is missing."""
+    """Load data/material-values.json, or return an empty dict if it is missing."""
     if not values_path.exists():
         print(f"WARNING: {values_path} not found. Material readouts disabled.")
         return {}

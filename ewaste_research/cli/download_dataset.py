@@ -41,7 +41,7 @@ def main() -> None:
             print(f"  kaggle datasets download -d {slug} -p {target} --unzip")
     else:
         print("\nAfter you find Kaggle dataset slugs, run for example:")
-        print("  python download_dataset_candidates.py --kaggle-slug owner/dataset-name")
+        print("  python -m ewaste_research.cli.download_dataset --kaggle-slug owner/dataset-name")
 
 
 if __name__ == "__main__":

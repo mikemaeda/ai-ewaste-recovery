@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
         default=Path("artifacts/models/best_image_classifier.keras"),
     )
     parser.add_argument("--classes", type=Path, default=Path("artifacts/reports/class_names.json"))
-    parser.add_argument("--values", type=Path, default=Path("material_values.json"))
+    parser.add_argument("--values", type=Path, default=Path("data/material-values.json"))
     parser.add_argument("--top-k", type=int, default=3)
     return parser.parse_args()
 

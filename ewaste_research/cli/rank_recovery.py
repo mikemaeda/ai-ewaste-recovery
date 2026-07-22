@@ -16,7 +16,7 @@ from ewaste_research.taxonomy import CANONICAL_CLASSES
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Rank component classes by recovery value.")
-    parser.add_argument("--values", type=Path, default=Path("material_values.json"))
+    parser.add_argument("--values", type=Path, default=Path("data/material-values.json"))
     parser.add_argument(
         "--output",
         type=Path,
