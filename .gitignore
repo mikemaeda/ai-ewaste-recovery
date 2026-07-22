@@ -41,6 +41,20 @@ leetcode_practice/
 artifacts/reports/camera_probe/*.jpg
 artifacts/reports/camera_probe/*.png
 
+# Private poster drafts, presentation notes, and generated poster artifacts
+FINAL_POSTER_DRAFT.md
+HOW_IT_WORKS.md
+POSTER_*.md
+PROFESSOR_TALKING_POINTS.md
+PROJECT_STATUS.md
+generate_explanation_pdf.py
+make_poster_figures.py
+methods_workflow_diagram.html
+methods_workflow_diagram.svg
+poster_draft_*.html
+artifacts/reports/ewaste_model_process_explanation.pdf
+artifacts/reports/poster/
+
 # OS/editor files
 .DS_Store
 Thumbs.db
